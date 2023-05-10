@@ -46,18 +46,22 @@ const AppProvider = ({ children }) => {
   // axios --base url
   const instance = axios.create({
     // development->
-     baseURL: 'call/api/v1'
+    //  baseURL: 'call/api/v1'
     // production
     // baseURL: '/api/v1',
     
+
+    
   });
+// safe url
+let url='http://localhost:5000/api/v1'
 
   const setFile=(file)=>{
     dispatch({type:SET_FILE,payload:file});  
   } 
     
    const logoutUser =async()=>{
-      await instance.get('/auth/logout');
+      await instance.get(`${url}/auth/logout`);
       dispatch({type:LOGOUT_USER});  
     }
     
@@ -83,7 +87,7 @@ const AppProvider = ({ children }) => {
       dispatch({type:API_CALL_BEGIN});
       
       try{
-        const {data} =await instance.post('/auth/login',currUser);
+        const {data} =await instance.post(`${url}/auth/login`,currUser);
         
         dispatch({ 
           type:LOGIN_USER_SUCCESS,
@@ -132,7 +136,7 @@ const AppProvider = ({ children }) => {
       dispatch({type:API_CALL_BEGIN});     
       try {
   
-        const response= await fetch(`http://localhost:5000/api/v1/getData?yearOfPurchase=${yearOfPurchase}&status=${status}&place=${place}&customerName=${customerName}`) 
+        const response= await fetch(`${url}/getData?yearOfPurchase=${yearOfPurchase}&status=${status}&place=${place}&customerName=${customerName}`) 
         const data = await response.json();
         console.log(data);
         
@@ -153,7 +157,7 @@ const AppProvider = ({ children }) => {
       try {
         const formData = new FormData();
         formData.append('file', file);
-        const {data}= await instance.post('/upload', formData, {
+        const {data}= await instance.post(`${url}/upload`, formData, {
           headers: {
             'Content-Type': 'multipart/form-data'
           }

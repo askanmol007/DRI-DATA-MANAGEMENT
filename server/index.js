@@ -10,12 +10,18 @@ import bodyParser from "body-parser";
 // ES6 module for dirname
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
+import path from 'path'
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 // app
 const app=express();
 dotenv.config();
+// static->frontend
+
+app.use(express.static(path.resolve(__dirname,'../server/dist')))
+
+
 
 // middleware
 // app.use(bodyParser());
