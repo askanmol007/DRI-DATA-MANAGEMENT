@@ -2,6 +2,9 @@ import reducer from "./reducer";
 import axios from "axios";
 
 import {
+    EDIT_DATA_BEGIN,
+    EDIT_DATA_SUCCESS,
+    EDIT_DATA_FAIL,
     UPLOAD_DATA_SUCCESS,
     UPLOAD_DATA_FAIL,
     API_CALL_BEGIN,
@@ -14,7 +17,10 @@ import {
     SET_FILE,
     SIGNUP_USER_SUCCESS,
     SIGNUP_USER_FAIL,
-    GET_ALL_DATA_SUCCESS
+    GET_ALL_DATA_SUCCESS,
+    GET_ALL_EDIT_REQUEST_SUCCESS,
+    APPROVE_EDIT_SUCCESS,
+    REJECT_EDIT_SUCCESS
     
    
     
@@ -31,11 +37,11 @@ export const initialState  ={
     mainData:[],
     file:null,
     message:"",
-    search: '',
-  searchStatus: 'all',
-  searchType: 'all',
-  sort: 'latest',
-  sortOptions: ['latest', 'oldest', 'a-z', 'z-a'],
+    editRequestData:[],
+    editDataStatusChange:false,
+    toggleAction:false,
+
+ 
      
 }
 const AppContext = React.createContext();
@@ -46,7 +52,7 @@ const AppProvider = ({ children }) => {
   // axios --base url
   const instance = axios.create({
     // development->
-    //  baseURL: 'call/api/v1'
+    //  baseURL: 'call/api/v1' to get cookies in browser during development
     // production
     // baseURL: '/api/v1',
     
@@ -106,11 +112,11 @@ let url='http://localhost:5000/api/v1'
     const getCurrUser=async()=>{
         dispatch({type:API_CALL_BEGIN});
         try{
-          const response= await fetch('http://localhost:5000/api/v1/auth/getCurrUser');
-          const data =await response.json();
+          const {data}= await instance(`/auth/getCurrUser`);
+          
           dispatch({
             type:GET_USER_SUCCESS,
-            payload:data?.user
+            payload:data.user
           })
         }catch(err){
           
@@ -118,25 +124,23 @@ let url='http://localhost:5000/api/v1'
            
             return;
           };
+          alert(err)
           dispatch({type:GET_USER_FAIL})
           logoutUser();
           // console.log(err.responce.data.msg);
         }
     }
-    // useEffect(() => {
-    //   getCurrUser();
-    // }, []);
     
     
-    // ADMIN
+    
     
      const getAllData=async(queryObject)=>{
-      let {status,place,yearOfPurchase,customerName}=queryObject;
+      let {status,place,yearOfPurchase,customerName,editStatus}=queryObject;
       customerName=customerName.toUpperCase()
       dispatch({type:API_CALL_BEGIN});     
       try {
   
-        const response= await fetch(`${url}/getData?yearOfPurchase=${yearOfPurchase}&status=${status}&place=${place}&customerName=${customerName}`) 
+        const response= await fetch(`${url}/getData?yearOfPurchase=${yearOfPurchase}&status=${status}&place=${place}&customerName=${customerName}&editStatus=${editStatus}`) 
         const data = await response.json();
         console.log(data);
         
@@ -149,10 +153,12 @@ let url='http://localhost:5000/api/v1'
       }
       
     }
+    
 
     const UploadData=async(file)=>{
      
       dispatch({type:API_CALL_BEGIN});
+
      
       try {
         const formData = new FormData();
@@ -162,7 +168,7 @@ let url='http://localhost:5000/api/v1'
             'Content-Type': 'multipart/form-data'
           }
         })
-       
+      
         dispatch({type:UPLOAD_DATA_SUCCESS,
           payload:data.message
         })
@@ -174,12 +180,86 @@ let url='http://localhost:5000/api/v1'
       }
     }
  
-   
+    // EXECUTIVE
+    const editData=async(id,changedData)=>{
+     
+      dispatch({type:EDIT_DATA_BEGIN});
+      
+      try {
+       
+        const {data}= await instance.post(`${url}/edit/${id}`,changedData)
+       
+        dispatch({type:EDIT_DATA_SUCCESS,
+          payload:data.data
+        })
+        
+      } catch (error) { 
+        dispatch({type:EDIT_DATA_FAIL});  
+      }
+    }
+    // VERIFIER
+    const  getAllEditRequest=async()=>{
+     
+      dispatch({type:API_CALL_BEGIN});
+     
+      try {
+       
+        const {data}= await instance.get(`${url}/edit/allData`)
+        console.log(data);
+        dispatch({type:GET_ALL_EDIT_REQUEST_SUCCESS,
+          payload:data.data
+        })
+        
+      } catch (error) { 
+        dispatch({type:API_CALL_FAIL});  
+      }
+    }
+    const approveEditRequest=async(id)=>{
+      dispatch({type:API_CALL_BEGIN});
+      try {
+       
+        const {data}= await instance.patch(`${url}/edit/update/${id}`)
+        console.log(data);
+        dispatch({type:APPROVE_EDIT_SUCCESS
+        })
+        
+      } catch (error) { 
+        dispatch({type:API_CALL_FAIL});  
+      }
+
+    }
+    const rejectEditRequest=async(id)=>{
+      dispatch({type:API_CALL_BEGIN});
+      try {
+       
+        const {data}= await instance.patch(`${url}/edit/${id}`)
+        console.log(data);
+        dispatch({type:REJECT_EDIT_SUCCESS
+        })
+        
+      } catch (error) { 
+        dispatch({type:API_CALL_FAIL});  
+      }
+    }
+    // initial app load
+    useEffect(()=>{
+     // getUser
+      getCurrUser();
+    // raw data  
+      getAllData({
+        status:"All",
+        place:"All",
+        yearOfPurchase:"",
+        customerName:"",
+        editStatus:"All"
+      });
+      getAllEditRequest();
+    },[])
     return (
         <AppContext.Provider
           value={{...state,
-            setFile,UploadData,getAllData,
-            signupUser,loginUser,logoutUser,getCurrUser}}
+            setFile,UploadData,getAllData,editData,getAllEditRequest,approveEditRequest,rejectEditRequest
+            ,signupUser,loginUser,logoutUser,getCurrUser}}
         >
           {children}
         </AppContext.Provider>

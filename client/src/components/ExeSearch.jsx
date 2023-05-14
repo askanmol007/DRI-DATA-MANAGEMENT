@@ -4,6 +4,7 @@ import { useAppContext } from '../context/appContext';
 
 const statusOptions=['Regular','Outstanding']
 const placeOptions=["Ajmer","Delhi"]
+const actionOptions=["pending","approved","rejected"]
 
 const SearchContainer = () => {
 
@@ -12,8 +13,7 @@ const SearchContainer = () => {
     place:"All",
     yearOfPurchase:"",
     customerName:"",
-    editStatus:"All",
-    
+    editStatus:"All"
   });
   
   const {getAllData}=useAppContext();
@@ -52,7 +52,7 @@ const SearchContainer = () => {
         })
       }
     </select>
-  </div>
+      </div>
   {/* place */}
   <div className='flex flex-col mb-4 flex-1'>
     <label htmlFor='place' className='text-lg  mb-2'>Place:</label>
@@ -77,7 +77,7 @@ const SearchContainer = () => {
   
       id='yearOfPurchase'
       type='number'
-      name='yearOfPurchase'
+      name='yearOfPurchase' 
       value={form.yearOfPurchase}
       onChange={handleInputChange}
       className='border border-gray-400 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500'
@@ -97,6 +97,24 @@ const SearchContainer = () => {
       className='border border-gray-400 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500'
     />
   </div>
+
+  <div className='flex flex-col mb-4 flex-1'>
+    <label htmlFor='place' className='text-lg  mb-2'>Action:</label>
+    <select
+      id='editStatus'
+      name='editStatus'
+      value={form.editStatus}
+      onChange={handleInputChange}
+      className='border border-gray-400 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500'
+    >
+      {
+        ['All',...actionOptions].map((data)=>{
+          return <option key={data} value={data}>{data}</option>
+        })
+      }
+    </select>
+  </div>
+
       </div>
       
   

@@ -1,4 +1,4 @@
-// crateing token and saving in cookie
+// cratering token and saving in cookie
 
 export default (user,statusCode,res)=>{
 

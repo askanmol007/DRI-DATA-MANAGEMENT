@@ -1,6 +1,6 @@
 import express from "express"
 import multer from "multer";
-import {upload as uploadMainData,getData} from "../controllers/mainDataControllers.js"
+import {upload as uploadMainData,getData,} from "../controllers/mainDataControllers.js"
 const router =express.Router();
 
 // upload file middleware || multer
@@ -17,11 +17,10 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 // router
-// const temp=(req,res,next)=>{
-//   console.log("get data called");
-//   next();
-// }
 router.route('/upload').post(upload.single('file'),uploadMainData);
 router.route('/getData').get(getData);
+
+
+
 export default router;
 

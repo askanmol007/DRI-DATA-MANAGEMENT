@@ -4,14 +4,13 @@ import XLSX from 'xlsx';
 import ErrorHandler from "../utils/errorHandler.js";
 import stringToDate from "../utils/stringToDate.js";
 import moment from "moment";
+import UpdateData from "../models/UpdateData.js";
 
  
 
 const upload = catchAsyncError(async (req, res, next) => {
     try {
       const file = req.file;
-      console.log(req.file);
-      console.log("here")
       const workbook = XLSX.readFile(file.path);
       const worksheet = workbook.Sheets[workbook.SheetNames[0]];
       const jsonData = XLSX.utils.sheet_to_json(worksheet);
@@ -42,7 +41,6 @@ const upload = catchAsyncError(async (req, res, next) => {
          
         const data=await MainData.findOne({appNumber: documentData.appNumber});
         if(data){
-          console.log(data);
           break;
         }
         const document = new MainData(documentData);
@@ -63,25 +61,37 @@ const upload = catchAsyncError(async (req, res, next) => {
   });
 
   const getData=catchAsyncError(async(req,res,next)=>{
-    // console.log("getData")
-    const {status,place,yearOfPurchase,customerName}=req.query;
+    
+    const {status,place,yearOfPurchase,customerName,editStatus}=req.query;
     
 
-    const queryObject = {};
+    const queryObject = {}; 
     if (status && status !== 'All') {
         queryObject.status = status;
     }
     if (place && place !== 'All') {
-        queryObject.place = place;
-    }
+      queryObject.place = place;
+  }
     if (yearOfPurchase) {
         queryObject.yearOfPurchase = yearOfPurchase;
     }
     if (customerName) {
         queryObject.customerName = { $regex: customerName, $options: 'i' };
       }
-    console.log(queryObject);
-    const result=await MainData.find(queryObject)
+    
+    let result=await MainData.find(queryObject)
+    console.log(editStatus)
+    if(editStatus && editStatus!=='All'){
+      const editDataRequest=await UpdateData.find();
+      result =result.filter((data)=>editDataRequest.some(editData=>{
+            // if(editStatus==='Not Seen'){
+            //   console.log(String(data._id)!==String(editData.dataId));
+            //   return String(data._id)!==String(editData.dataId)
+            // }
+            return String(editData.dataId)===String(data._id) && editData.status===editStatus;
+      }))
+      
+    }
 
     res.status(200).json({
         success:true,
@@ -89,6 +99,7 @@ const upload = catchAsyncError(async (req, res, next) => {
        
     })
   })
+
   
 
     export {upload,getData}

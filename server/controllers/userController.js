@@ -23,7 +23,6 @@ const signupUser =catchAsyncError(async (req,res,next)=>{
 const loginUser =catchAsyncError(async(req,res,next)=>{
 
     const {email,password}=req.body;
-    console.log({email,password});
 
     if(!email || !password){
         return next(new ErrorHandler("Please Enter Email & Password",400));

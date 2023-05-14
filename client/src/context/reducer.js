@@ -12,15 +12,29 @@ import {
     SIGNUP_USER_FAIL,
     UPLOAD_DATA_SUCCESS,
     UPLOAD_DATA_FAIL,
+    EDIT_DATA_BEGIN,
+    EDIT_DATA_FAIL,
+    EDIT_DATA_SUCCESS,
+    GET_ALL_EDIT_REQUEST_SUCCESS,
+    APPROVE_EDIT_SUCCESS,
+    REJECT_EDIT_SUCCESS,
     
    
 } from './action'
 
 const reducer =(state,action)=>{
     
-    if( action.type===API_CALL_BEGIN){
+    if( action.type===API_CALL_BEGIN ||action.type=== EDIT_DATA_BEGIN){
         return{
             ...state,
+            isLoading:true         
+        }
+    }
+    if(action.type=== EDIT_DATA_BEGIN){
+        return{
+           
+            ...state,
+            
             isLoading:true         
         }
     }
@@ -103,16 +117,31 @@ const reducer =(state,action)=>{
            message:action.payload    
         }
     }
+    if(action.type===EDIT_DATA_SUCCESS || action.type===EDIT_DATA_FAIL ){
+        return {
+            ...state,
+            toggleAction:!state.toggleAction,
+            isLoading:false,
+             
+        }
+    }
+    if(action.type===  GET_ALL_EDIT_REQUEST_SUCCESS ){
+        return {
+            ...state,
+            editRequestData:action.payload,
+            isLoading:false,
+             
+        }
+    }
+    if(action.type===APPROVE_EDIT_SUCCESS ||action.type=== REJECT_EDIT_SUCCESS ){
+        return {
+            ...state,
+            editDataStatusChange:!state.editDataStatusChange,
+            isLoading:false,
+             
+        }
+    }
     
-    
-    
-    // if(action.type===CHANGE_ROLE__SUCCESS){
-    //     return {
-    //         ...state,
-    //         isLoading:false,
-    //         users:action.payload
-    //     }
-    // }
     
     
     
