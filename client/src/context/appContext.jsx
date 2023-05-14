@@ -60,7 +60,9 @@ const AppProvider = ({ children }) => {
     
   });
 // safe url
-let url='http://localhost:5000/api/v1'
+//let url='http://localhost:5000/api/v1'
+// production
+let url=' https://firsttask-szu8.onrender.com'
 
   const setFile=(file)=>{
     dispatch({type:SET_FILE,payload:file});  
@@ -124,7 +126,7 @@ let url='http://localhost:5000/api/v1'
            
             return;
           };
-          alert(err)
+          
           dispatch({type:GET_USER_FAIL})
           logoutUser();
           // console.log(err.responce.data.msg);
