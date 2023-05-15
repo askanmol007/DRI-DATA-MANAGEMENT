@@ -21,7 +21,14 @@ dotenv.config();
 
 // static->frontend
 app.use(express.static(path.resolve(__dirname,'../server/dist')))
-
+// app.get("/*", function(req, res) {
+//     res.sendFile(path.join(__dirname, '../server/dist/index.html'), function(err) {
+//       if (err) {
+//         console.error(err);
+//         res.status(500).send(err);
+//       }
+//     });
+//   });
 // middleware
 app.use(express.json());
 app.use(cors());
@@ -31,6 +38,7 @@ app.use(cookieParser());
 app.use('/api/v1/auth',userRouter);
 app.use('/api/v1',mainDataRouter);
 app.use('/api/v1/edit',UpdateDataRouter);
+
 
 
 app.get('*',(req,res)=>{

@@ -4,7 +4,18 @@ import { useAppContext } from '../../context/appContext';
 import { ExeSearchContainer } from '../../components';
 
 const Data = () => {
-  const {getAllEditRequest,toggleAction,mainData,isLoading,editRequestData}=useAppContext();
+  const {getAllEditRequest,toggleAction,mainData,isLoading,editRequestData,getAllData}=useAppContext();
+  useEffect(()=>{
+    getAllData({
+      status:"All",
+      place:"All",
+      yearOfPurchase:"",
+      customerName:"",
+      editStatus:"All",
+
+    });
+    getAllEditRequest();
+  },[])
   useEffect(()=>{
     getAllEditRequest();
   },[toggleAction])

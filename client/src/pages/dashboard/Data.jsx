@@ -4,6 +4,17 @@ import { useAppContext } from '../../context/appContext';
 const Data = () => {
   const {getAllData,mainData,isLoading}=useAppContext();
   
+  useEffect(()=>{
+    getAllData({
+      status:"All",
+      place:"All",
+      yearOfPurchase:"",
+      customerName:"",
+      editStatus:"All",
+
+    });
+    
+  },[])
 
 
     

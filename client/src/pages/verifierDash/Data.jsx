@@ -11,6 +11,8 @@ const Data = () => {
       place:"All",
       yearOfPurchase:"",
       customerName:"",
+      editStatus:"All",
+
     });
     getAllEditRequest();
   },[editDataStatusChange])
