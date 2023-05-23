@@ -5,7 +5,6 @@ import { useAppContext } from '../context/appContext';
 const ProtectedRoute = ({ children }) => {
   const { user,isAuthenticated } = useAppContext();
   
-  
   if(!isAuthenticated || !user){
    return <Navigate to={"/auth"} />
   }

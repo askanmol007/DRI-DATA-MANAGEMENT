@@ -40,9 +40,6 @@ export const initialState  ={
     editRequestData:[],
     editDataStatusChange:false,
     toggleAction:false,
-
- 
-     
 }
 const AppContext = React.createContext();
 
@@ -51,16 +48,17 @@ const AppProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer,initialState);
   // axios --base url
   const instance = axios.create({
-    // development->
-    //  baseURL: 'call/api/v1' to get cookies in browser during development
+    // development
+    //  baseURL: 'call/api/v1'   
+      // to get cookies in browser during development
     // production
     // baseURL: '/api/v1',
     
 
     
-  });
+  });   
 // safe url
-//let url='http://localhost:5000/api/v1'
+// let url='http://localhost:5000/api/v1'
 // production
 let url='https://firsttask-szu8.onrender.com/api/v1'
 
@@ -68,10 +66,7 @@ let url='https://firsttask-szu8.onrender.com/api/v1'
     dispatch({type:SET_FILE,payload:file});  
   } 
     
-   const logoutUser =async()=>{
-      await instance.get(`${url}/auth/logout`);
-      dispatch({type:LOGOUT_USER});  
-    }
+  
     
     const signupUser=async (currUser)=>{
       dispatch({type:API_CALL_BEGIN});
@@ -95,8 +90,8 @@ let url='https://firsttask-szu8.onrender.com/api/v1'
       dispatch({type:API_CALL_BEGIN});
       
       try{
-        const {data} =await instance.post(`${url}/auth/login`,currUser);
-        
+        const {data} =await instance.post(`${url}/login`,currUser);
+        console.log("data",data)
         dispatch({ 
           type:LOGIN_USER_SUCCESS,
           payload:data.user
@@ -111,6 +106,14 @@ let url='https://firsttask-szu8.onrender.com/api/v1'
       }
 
     }
+
+
+    const logoutUser =async()=>{
+      await instance.get(`${url}/logout`);
+      dispatch({type:LOGOUT_USER});  
+    }
+
+
     const getCurrUser=async()=>{
         dispatch({type:API_CALL_BEGIN});
         try{
@@ -155,7 +158,6 @@ let url='https://firsttask-szu8.onrender.com/api/v1'
       }
       
     }
-    
 
     const UploadData=async(file)=>{
      

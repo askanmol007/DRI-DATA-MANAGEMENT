@@ -52,9 +52,9 @@ const LoginPage = () => {
       } 
     //    
      
-   if(isLoading){
-    return <Loader/>
-   }   
+  //  if(isLoading){
+  //   return <Loader/>
+  //  }   
   return (
     <div className='bg-gray-100 h-screen w-full flex flex-col sm:flex-row'>
         {/* login section */}

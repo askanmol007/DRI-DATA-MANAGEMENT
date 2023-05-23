@@ -1,23 +1,28 @@
 import mongoose from "mongoose";
 
-const mainDataSchema =new mongoose.Schema({
-  placeId: { type: String, required: true },
-  place: { type: String, required: true },
-  appNumber: { type: String, required: true },
-  company: { type: String, required: true },
-  
-  yearOfPurchase: { type: Number, required: true },
-  customerName: { type: String, required: true },
-  GSV: { type: Number, required: true },
-  CSV: { type: Number, required: true },
-  deposit: { type: Number, required: true },
-  status: { type: String, required: true },
-  outstanding: { type: Number, required: true },
-  yearTillNow: { type: Number, required: true },
-  currentValue: { type: Number, required: true },
-  afterDeductingLicenseFees: { type: Number, required: true },
-  remarks: { type: String, required: true },
-  appDate: { type: Date, required: true },
-})
+const mainDataSchema = new mongoose.Schema({
+  dri_id: { type: String, default: "" },
 
-export default mongoose.model('MainData',mainDataSchema);
+  // placeId: { type: String, required: true },
+  place: { type: String, default: "" },
+  appNumber: { type: String, default: "" },
+  company: { type: String, default: "" },
+  membershipr_type: { type: String, default: "" },
+  a: { type: String, default: "" },
+  pp_d: { type: String, default: "" },
+  yearOfPurchase: { type: Number, default: 0 },
+  amc: { type: String, default: "" },
+  customerName: { type: String, default: "" },
+  GSV: { type: Number, default: 0 },
+  CSV: { type: Number, default: 0 },
+  deposit: { type: String, default: "" },
+  status: { type: String, default: "" },
+  outstanding: { type: Number, default: 0 },
+  yearTillNow: { type: Number, default: 0 },
+  // currentValue: { type: Number, required: true },
+  afterDeductingLicenseFees: { type: Number, default: 0 },
+  remarks: { type: String, default: "" },
+  // appDate: { type: Date, required: true },
+});
+
+export default mongoose.model("MainData", mainDataSchema);
