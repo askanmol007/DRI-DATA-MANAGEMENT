@@ -22,7 +22,7 @@ app.use(morgan("dev"));
 dotenv.config();
 
 // static->frontend
-app.use(express.static(path.resolve(__dirname, "../server/dist")));
+
 // app.get("/*", function(req, res) {
 //     res.sendFile(path.join(__dirname, '../server/dist/index.html'), function(err) {
 //       if (err) {
@@ -33,7 +33,11 @@ app.use(express.static(path.resolve(__dirname, "../server/dist")));
 //   });
 // middleware
 app.use(express.json());
-app.use(cors());
+app.use(
+  cors({
+    origin: "*",
+  })
+);
 app.use(cookieParser());
 
 // routes
@@ -41,9 +45,11 @@ app.use("/api/v1", userRouter);
 app.use("/api/v1", mainDataRouter);
 app.use("/api/v1/edit", UpdateDataRouter);
 
-app.get("*", (req, res) => {
-  res.status(404).send("<h1> Not Found</h2>");
-});
+app.use(express.static(path.resolve(__dirname, "../server/dist")));
+
+// app.get("*", (req, res) => {
+//   res.status(404).send("<h1> Not Found</h2>");
+// });
 // errorMiddleware
 app.use(errorMiddleware);
 

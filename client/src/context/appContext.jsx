@@ -90,7 +90,7 @@ let url='https://firsttask-szu8.onrender.com/api/v1'
       dispatch({type:API_CALL_BEGIN});
       
       try{
-        const {data} =await instance.post(`${url}/login`,currUser);
+        const {data} =await instance.post(`${url}/auth/login`,currUser);
         console.log("data",data)
         dispatch({ 
           type:LOGIN_USER_SUCCESS,
@@ -109,7 +109,7 @@ let url='https://firsttask-szu8.onrender.com/api/v1'
 
 
     const logoutUser =async()=>{
-      await instance.get(`${url}/logout`);
+      await instance.get(`${url}/auth/logout`);
       dispatch({type:LOGOUT_USER});  
     }
 
