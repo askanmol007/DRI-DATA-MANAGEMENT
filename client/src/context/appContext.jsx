@@ -60,7 +60,7 @@ const AppProvider = ({ children }) => {
 // safe url
 // let url='http://localhost:5000/api/v1'
 // production
-let url='https://firsttask-szu8.onrender.com/api/v1'
+let url='https://data-management-z09d.onrender.com/api/v1'
 
   const setFile=(file)=>{
     dispatch({type:SET_FILE,payload:file});  
