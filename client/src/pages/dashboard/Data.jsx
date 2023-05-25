@@ -11,40 +11,86 @@ function Items({ currentItems }) {
         <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
           <tr>
             <th scope="col" className="px-6 py-3">
-              Customer Name
+              DRI-ID
             </th>
             <th scope="col" className="px-6 py-3">
-              App number
+              PLACE
             </th>
             <th scope="col" className="px-6 py-3">
-              place
+              APP NO
             </th>
             <th scope="col" className="px-6 py-3">
-             Amc
+             COMPANY
             </th>
             <th scope="col" className="px-6 py-3">
-              Year of Purchase
+             MEMBERSHIP TYPE
             </th>
             <th scope="col" className="px-6 py-3">
-              Status
+              YEAR OF PURCHASE
             </th>
+            <th scope="col" className="px-6 py-3">
+              AMC
+            </th>
+            <th scope="col" className="px-6 py-3">
+              CUSTOMER NAME
+            </th>
+            <th scope="col" className="px-6 py-3">
+              GSV
+            </th>
+            <th scope="col" className="px-6 py-3">
+              CSV
+            </th>
+            <th scope="col" className="px-6 py-3">
+              DEPOSIT
+            </th>
+            <th scope="col" className="px-6 py-3">
+              STATUS
+            </th>
+            <th scope="col" className="px-6 py-3">
+              OUTSTANDING
+            </th>
+            <th scope="col" className="px-6 py-3">
+              YEAR TILL NOW
+            </th>
+            <th scope="col" className="px-6 py-3">
+              AFTER DEDUCTING LICENSE FEE
+            </th>
+            <th scope="col" className="px-6 py-3">
+              REMARKS
+            </th>
+          
+
           </tr>
         </thead>
         <tbody>
           {currentItems.map((obj) => {
             return (
               <tr key={obj._id} className="bg-white border-b dark:bg-gray-100 ">
-                <th
+                <td
                   scope="row"
                   className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-black"
                 >
-                  {obj.customerName}
-                </th>
-                <td className="px-6 py-4">{obj.appNumber}</td>
+                 {obj.dri_id}
+                </td>
+                
                 <td className="px-6 py-4">{obj.place}</td>
-                <td className="px-6 py-4 ">{obj.amc}</td>
-                <td className="px-6 py-4 text-center">{obj.yearOfPurchase}</td>
+                <td className="px-6 py-4 ">{obj.appNumber}</td>
+                <td className="px-6 py-4 text-center">{obj.company}</td>
+                <td className="px-6 py-4">{obj.membership_type}</td>
+                <td className="px-6 py-4">{obj.yearofpurchase}</td>
+                <td className="px-6 py-4">{obj.amc}</td>
+                <td className="px-6 py-4">{obj.customerName}</td>
+                <td className="px-6 py-4">{obj.GSV}</td>
+                <td className="px-6 py-4">{obj.CSV}</td>
+                <td className="px-6 py-4">{obj.deposit}</td>
                 <td className="px-6 py-4">{obj.status}</td>
+
+                <td className="px-6 py-4">{obj.outstanding}</td>
+                <td className="px-6 py-4">{obj.yearTillNow}</td>
+                <td className="px-6 py-4">{obj.afterDeductingLicenseFees}</td>
+                <td className="px-6 py-4">{obj.remarks}</td>
+
+                
               </tr>
             );
           })}

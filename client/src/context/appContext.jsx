@@ -58,9 +58,9 @@ const AppProvider = ({ children }) => {
     
   });   
 // safe url
-// let url='http://localhost:5000/api/v1'
+let url='http://localhost:5000/api/v1'
 // production
-let url='https://data-management-z09d.onrender.com/api/v1'
+// let url='https://data-management-z09d.onrender.com/api/v1'
 
   const setFile=(file)=>{
     dispatch({type:SET_FILE,payload:file});  
@@ -140,12 +140,12 @@ let url='https://data-management-z09d.onrender.com/api/v1'
     
     
      const getAllData=async(queryObject)=>{
-      let {status,place,yearOfPurchase,customerName,editStatus}=queryObject;
+      let {status,place,yearofpurchase,customerName,editStatus,dri_id,appNumber}=queryObject;
       customerName=customerName.toUpperCase()
       dispatch({type:API_CALL_BEGIN});     
       try {
   
-        const response= await fetch(`${url}/getData?yearOfPurchase=${yearOfPurchase}&status=${status}&place=${place}&customerName=${customerName}&editStatus=${editStatus}`) 
+        const response= await fetch(`${url}/getData?dri_id=${dri_id}&appNumber=${appNumber}&yearofpurchase=${yearofpurchase}&status=${status}&place=${place}&customerName=${customerName}&editStatus=${editStatus}`) 
         const data = await response.json();
         console.log(data);
         
@@ -253,9 +253,11 @@ let url='https://data-management-z09d.onrender.com/api/v1'
       getAllData({
         status:"All",
         place:"All",
-        yearOfPurchase:"",
+        yearofpurchase:"",
+        dri_id:"",
         customerName:"",
-        editStatus:"All"
+        editStatus:"All",
+        appNumber:"",
       });
       getAllEditRequest();
     },[])

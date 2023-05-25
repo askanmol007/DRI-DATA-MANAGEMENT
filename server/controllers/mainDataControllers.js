@@ -18,48 +18,65 @@ const upload = catchAsyncError(async (req, res, next) => {
     let batchData = [];
     let insertedCount = 0;
 
-    for (const row of jsonData) {
-      const documentData = {
-        dri_id: row["DRI-ID"],
-        place: row["Place"],
-        appNumber: row["APP No."],
-        company: row["Company"],
-        membership_type: row["Membership Type"],
-        a: row["A"],
-        pp_d: row["PP D"],
-        yearOfPurchase: row["Year Of Purchase"],
-        amc: row["AMC"],
-        customerName: row["CUSTOMER NAME"],
-        GSV: row[" GSV "],
-        CSV: row[" CSV "],
-        deposit: row[" Deposit "],
-        status: row["Status"],
-        outstanding: row[" Outstanding "],
-        yearTillNow: row[" Year Till Now "],
-        afterDeductingLicenseFees: row[" After Deducting License Fees "],
-        remarks: row["Remarks"],
-      };
+    if (jsonData) {
+      for (const row of jsonData) {
+        const documentData = {
+          dri_id: row["DRI-ID"],
+          place: row["Place"],
+          appNumber: row["APP No."],
+          company: row["Company"],
+          membership_type: row["Membership Type"],
+          a: row["A"],
+          pp_d: row["PP D"],
+          year: row["Year Of Purchase"],
+          amc: row["AMC"],
+          customerName: row["CUSTOMER NAME"],
+          GSV: row[" GSV "],
+          CSV: row[" CSV "],
+          deposit: row[" Deposit "],
+          status: row["Status"],
+          outstanding: row[" Outstanding "],
+          yearTillNow: row[" Year Till Now "],
+          currentValue: row["Current Value "],
+          afterDeductingLicenseFees: row[" After Deducting License Fees "],
+          remarks: row["Remarks"],
+        };
 
-      batchData.push(documentData);
+        batchData.push(documentData);
 
-      if (batchData.length === batchSize) {
+        if (batchData.length === batchSize) {
+          await MainData.insertMany(batchData);
+          insertedCount += batchData.length;
+          batchData = [];
+        }
+      }
+
+      // Insert any remaining documents in the batch
+      if (batchData.length > 0) {
         await MainData.insertMany(batchData);
         insertedCount += batchData.length;
-        batchData = [];
       }
     }
-
-    // Insert any remaining documents in the batch
-    if (batchData.length > 0) {
-      await MainData.insertMany(batchData);
-      insertedCount += batchData.length;
-    }
+    await MainData.updateMany({}, [
+      {
+        $set: {
+          yearofpurchase: {
+            $concat: ["$a", "$pp_d", "$year"],
+          },
+        },
+      },
+      {
+        $unset: ["a", "pp_d", "year"],
+      },
+    ]);
 
     res.status(200).json({
       success: true,
       message: "File uploaded successfully",
       insertedCount: insertedCount,
     });
+
+    // Update the documents in the collection
   } catch (error) {
     console.log(error);
     res.status(500).json({
@@ -103,24 +120,38 @@ const getDataList = catchAsyncError(async (req, res, next) => {
 });
 
 const getData = catchAsyncError(async (req, res, next) => {
-  const { status, place, yearOfPurchase, customerName, editStatus } = req.query;
-
+  const {
+    status,
+    place,
+    yearofpurchase,
+    customerName,
+    editStatus,
+    dri_id,
+    appNumber,
+  } = req.query;
+  console.log(typeof req.query);
   const queryObject = {};
+  if (appNumber) {
+    queryObject.appNumber = appNumber;
+  }
+  if (dri_id) {
+    queryObject.dri_id = dri_id;
+  }
   if (status && status !== "All") {
     queryObject.status = status;
   }
   if (place && place !== "All") {
     queryObject.place = place;
   }
-  if (yearOfPurchase) {
-    queryObject.yearOfPurchase = yearOfPurchase;
+  if (yearofpurchase) {
+    queryObject.yearofpurchase = yearofpurchase;
   }
   if (customerName) {
     queryObject.customerName = { $regex: customerName, $options: "i" };
   }
 
   let result = await MainData.find(queryObject);
-  console.log(editStatus);
+  // console.log(result);
   if (editStatus && editStatus !== "All") {
     const editDataRequest = await UpdateData.find();
     result = result.filter((data) =>

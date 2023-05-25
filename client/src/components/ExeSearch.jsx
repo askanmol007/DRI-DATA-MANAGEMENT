@@ -34,9 +34,28 @@ const SearchContainer = () => {
   return (
     <div >
       <form onSubmit={handleSubmit} className='bg-gray-50 w-full mx-auto rounded p-7  shadow-md hover:shadow-lg transition duration-400 ease-in-out'>
-  {/* status */}
+ 
   <h1 className='text-[2rem] mb-5'>Search form </h1>
       <div className='flex justify-evenly flex-wrap gap-3'>
+        {/* DRI_ID */}
+        <div className='flex flex-col mb-4 flex-1'>
+     <label htmlFor='status' className='text-lg  mb-2'>DRI-ID:</label>
+     <select
+      id='status'
+      name='status'
+      value={form.status}
+      onChange={handleInputChange}
+      className='border border-gray-400 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500'
+    >
+      {
+        ['All',...statusOptions].map((data)=>{
+          return <option key={data} value={data}>{data}</option>
+        })
+      }
+    </select>
+      </div>
+        
+         {/* status */}
       <div className='flex flex-col mb-4 flex-1'>
     <label htmlFor='status' className='text-lg  mb-2'>Status:</label>
     <select

@@ -41,7 +41,7 @@ app.use(
 app.use(cookieParser());
 
 // routes
-app.use("/api/v1", userRouter);
+app.use("/api/v1/auth", userRouter);
 app.use("/api/v1", mainDataRouter);
 app.use("/api/v1/edit", UpdateDataRouter);
 

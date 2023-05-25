@@ -10,9 +10,11 @@ const SearchContainer = () => {
   const [form,setForm]=useState({
     status:"All",
     place:"All",
-    yearOfPurchase:"",
+    dri_id:"",
+    yearofpurchase:"",
     customerName:"",
     editStatus:"All",
+    appNumber:"",
     
   });
   
@@ -34,11 +36,37 @@ const SearchContainer = () => {
   return (
     <div >
       <form onSubmit={handleSubmit} className='bg-gray-50 w-full mx-auto rounded p-7  shadow-md hover:shadow-lg transition duration-400 ease-in-out'>
-  {/* status */}
+ 
   <h1 className='text-[2rem] mb-5'>Search form </h1>
       <div className='flex justify-evenly flex-wrap gap-3'>
+        {/* DRI_ID */}
+        <div className='flex flex-col mb-4 flex-1'>
+     <label htmlFor='status' className='text-lg  mb-2'>DRI-ID:</label>
+     <input
+      id='dri_id'
+      type='text'
+      name='dri_id'
+      value={form.dri_id}
+      onChange={handleInputChange}
+      className='border border-gray-400 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500'
+    />
+      </div>
+
+      {/* App NUMBER */}
       <div className='flex flex-col mb-4 flex-1'>
-    <label htmlFor='status' className='text-lg  mb-2'>Status:</label>
+     <label htmlFor='status' className='text-lg  mb-2'>APP NUMBER:</label>
+     <input
+      id='appNumber'
+      type='text'
+      name='appNumber'
+      value={form.appNumber}
+      onChange={handleInputChange}
+      className='border border-gray-400 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500'
+    />
+      </div>
+         {/* status */}
+      <div className='flex flex-col mb-4 flex-1'>
+    <label htmlFor='status' className='text-lg  mb-2'>STATUS:</label>
     <select
       id='status'
       name='status'
@@ -55,7 +83,7 @@ const SearchContainer = () => {
   </div>
   {/* place */}
   <div className='flex flex-col mb-4 flex-1'>
-    <label htmlFor='place' className='text-lg  mb-2'>Place:</label>
+    <label htmlFor='place' className='text-lg  mb-2'>PLACE:</label>
     <select
       id='place'
       name='place'
@@ -72,22 +100,22 @@ const SearchContainer = () => {
   </div>
   {/* Year of Purchase */}
   <div className='flex flex-col mb-4 flex-1'>
-    <label htmlFor='yearOfPurchase' className='text-lg  mb-2'>Year of Purchase</label>
+    <label htmlFor='yearofpurchase' className='text-lg  mb-2'>YEAR OF PURCHASE</label>
     <input
   
-      id='yearOfPurchase'
-      type='number'
-      name='yearOfPurchase'
-      value={form.yearOfPurchase}
+      id='yearofpurchase'
+      type='text'
+      name='yearofpurchase'
+      value={form.yearofpurchase}
       onChange={handleInputChange}
       className='border border-gray-400 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500'
     />
-    {(form.yearOfPurchase!='' && form.yearOfPurchase.length!==4) ? <p className="text-sm text-red-500">*year should be length of 4</p>:<p></p>
-    }
+    {/* {(form.yearofpurchase!='' && form.yearofpurchase.length!==4) ? <p className="text-sm text-red-500">*year should be length of 4</p>:<p></p>
+    } */}
   </div>
   {/* Customer Name */}
   <div className='flex flex-col mb-4 flex-1'>
-    <label htmlFor='customerName' className='text-lg mb-2'>Customer Name:</label>
+    <label htmlFor='customerName' className='text-lg mb-2'>CUSTOMER NAME:</label>
     <input
       id='customerName'
       type='text'
